@@ -1,11 +1,26 @@
-// install Express
-const express = require('express');
+const express = require('express'), // install Express
+  morgan = require('morgan'); // install Morgan (as a logging middleware)
+
 const app = express();
 
-// install Morgan as an Express logging middleware
-const morgan = require('morgan');
-
 app.use(morgan('common'));
+
+const bodyParser = require('body-parser'), // install bodyParser as an Express error-handling middleware
+  methodOverride = require('method-override');
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
+app.use(bodyParser.json());
+app.use(methodOverride());
+
+app.use((err, req, res) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 // Express GET routes
 app.get('/movies', (req, res) => {
