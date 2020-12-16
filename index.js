@@ -19,10 +19,53 @@ app.use(
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
+
+let top10Movies = [
+  {
+    title: 'The Shawshank Redemption',
+    director: 'Frank Darabont'
+  },
+  {
+    title: 'The Godfather',
+    director: 'Francis Ford Coppola'
+  },
+  {
+    title: 'The Godfather: Part II',
+    director: 'Francis Ford Coppola'
+  },
+  {
+    title: 'The Dark Knight',
+    director: 'Christopher Nolan'
+  },
+  {
+    title: 'Schindlers List',
+    director: 'Steven Spielberg'
+  },
+  {
+    title: 'The Lord of the Rings: The Return of the King',
+    director: 'Peter Jackson'
+  },
+  {
+    title: 'Pulp Fiction',
+    director: 'Quentin Tarantino'
+  },
+  {
+    title: 'Fight Club',
+    director: 'David Fincher'
+  },
+  {
+    title: 'Forrest Gump',
+    director: 'Robert Zemeckis'
+  },
+  {
+    title: 'Inception',
+    director: 'Christopher Nolan'
+  }
+];
 
 // Express GET routes
 app.get('/movies', (req, res) => {
