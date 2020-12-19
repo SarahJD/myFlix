@@ -1,15 +1,14 @@
 const express = require('express'), // install Express
   morgan = require('morgan'), // install Morgan (as a logging middleware)
-  uuid = require('uuid'); // install uuid for ID generating
+  uuid = require('uuid'), // install uuid for ID generating
+  bodyParser = require('body-parser'), // install bodyParser as an Express error-handling middleware
+  methodOverride = require('method-override');
 
 const app = express();
 
 app.use(morgan('common'));
 
 app.use(express.static('public'));
-
-const bodyParser = require('body-parser'), // install bodyParser as an Express error-handling middleware
-  methodOverride = require('method-override');
 
 app.use(
   bodyParser.urlencoded({
@@ -18,13 +17,15 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
 app.use(methodOverride());
 
+/*
 app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
-
+*/
 let movies = [
   {
     title: 'The Shawshank Redemption',
@@ -73,14 +74,16 @@ app.get('/movies', (req, res) => {
   res.json(movies);
 });
 
-// Gets the data about a single student, by name
-app.get('/movies/:name', (req, res) => {
+// Gets the data about a single movie, by title
+app.get('/movies/:title', (req, res) => {
   res.json(
     movies.find(movie => {
-      return movie.name === req.params.name;
+      return movie.title === req.params.title;
     })
   );
 });
+
+let users = [];
 
 // Gets the data about a single director, by name
 app.get('/directors/:name', (req, res) => {
@@ -93,7 +96,7 @@ app.get('/directors/:name', (req, res) => {
 
 // Adds data for a new user to our list of users
 app.post('/users', (req, res) => {
-  let newStudent = req.body;
+  let newUser = req.body;
 
   if (!newUser.name) {
     const message = 'Missing name in request body';
@@ -107,43 +110,82 @@ app.post('/users', (req, res) => {
 
 // Update the "username" of a user
 app.put('/users/:username', (req, res) => {
-  let user = users.find((user) => { return user.username === req.params.name });
+  let user = users.find(user => {
+    return user.username === req.params.username;
+  });
 
+  if (user) {
+    user.username = req.body.username;
+    res.status(201).send(user.username + ' is the new username');
+  } else {
+    res
+      .status(404)
+      .send('User with the name ' + req.params.username + ' was not found.');
+  }
+});
 
 // Adds data for a new movie to the user's list of favorite movies
-app.post('/favoriteslist', (req, res) => {
+app.post('/users/:username/favorites', (req, res) => {
   let newFavorite = req.body;
 
-  if (!newFavorite.name) {
-    const message = 'Missing name in request body';
+  if (!newFavorite.title) {
+    const message = 'Missing title in request body';
     res.status(400).send(message);
   } else {
-    newFavorite.id = uuid.v4();
-    favorites.push(newFavorite);
-    res.status(201).send(newFavorite);
+    let user = users.find(user => {
+      return user.username === req.params.username;
+    });
+    if (user) {
+      newFavorite.id = uuid.v4();
+      user.favorites.push(newFavorite);
+      res.status(201).send(newFavorite);
+    } else {
+      res
+        .status(404)
+        .send('User with the name ' + req.params.username + ' was not found.');
+    }
   }
 });
 
 // Deletes a movie from the user's favorite movie list by ID
-app.delete('/favoriteslist/:id', (req, res) => {
-  let favorite = favorites.find((favorite) => { return favorite.id === req.params.id });
+app.delete('/users/:username/favorites/:id', (req, res) => {
+  let user = users.find(user => {
+    return user.username === req.params.username;
+  });
 
-  if (favorite) {
-    favorite = favorites.filter((obj) => { return obj.id !== req.params.id });
-    res.status(201).send('Favorite Movie ' + req.params.id + ' was deleted.');
+  if (user) {
+    let favorite = user.favorites.find(favorite => {
+      return favorite.id === req.params.id;
+    });
+    if (favorite) {
+      let index = user.favorites.indexOf(favorite);
+      user.favorites.splice(index, 1);
+      res.status(204).send('deleted');
+    }
+  } else {
+    res
+      .status(404)
+      .send('User with the name ' + req.params.username + ' was not found.');
   }
 });
 
-// Deletes a user from the userlist by ID
-app.delete('/users/:id', (req, res) => {
-  let user = users.find((favorite) => { return user.id === req.params.id });
+// Deletes a user from the userlist by username
+app.delete('/users/:username', (req, res) => {
+  let user = users.find(user => {
+    return user.username === req.params.username;
+  });
 
   if (user) {
-    user = users.filter((obj) => { return obj.id !== req.params.id });
-    res.status(201).send('User ' + req.params.id + ' was deleted.');
+    let index = users.indexOf(user);
+    users.splice(index, 1);
+    res.status(204).send('deleted');
+  } else {
+    res
+      .status(404)
+      .send('User with the name ' + req.params.username + ' was not found.');
   }
 });
 
 app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+  console.log('Your app is listening on port 8080');
 });
