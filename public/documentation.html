@@ -36,12 +36,12 @@
           featured or not) about a single movie by title to the user Return data
           about a genre (description) by name/title (e.g., “Thriller”)
         </td>
-        <td>/movies/[name]</td>
+        <td>/movies/[title]</td>
         <td>GET</td>
         <td>None</td>
         <td>
           A JSON object holding data about a single movie, containing an ID,
-          name, description, genre, director, imageURL (if featured).
+          title, description, genre, director, imageURL (if featured).
           Example:<br />
           {<br />
           id : 1, <br />
@@ -110,12 +110,12 @@
           Allow users to add a movie to their list of favorites (showing only a
           text that a movie has been added—more on this later)
         </td>
-        <td>/favoriteslist</td>
+        <td>/users/[username]/favorites</td>
         <td>POST</td>
         <td>
           A JSON object holding the name of a favorite movie, structure like:<br />
           {<br />
-          name : "The Dark Knight"<br />
+          title : "The Dark Knight"<br />
           }
         </td>
         <td>
@@ -123,7 +123,7 @@
           an ID: <br />
           {<br />
           id : 123, <br />
-          name : "The Dark Knight"<br />
+          title : "The Dark Knight"<br />
           }
         </td>
       </tr>
@@ -131,7 +131,7 @@
         <td>
           Allow users to remove a movie from their list of favorites
         </td>
-        <td>/favoriteslist/[ID]</td>
+        <td>/users/[username]/favorites/[ID]</td>
         <td>DELETE</td>
         <td>None</td>
         <td>
@@ -142,7 +142,7 @@
         <td>
           Allow existing users to deregister
         </td>
-        <td>/users/[ID]</td>
+        <td>/users/[username]</td>
         <td>DELETE</td>
         <td>None</td>
         <td>
