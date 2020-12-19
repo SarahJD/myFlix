@@ -1,3 +1,154 @@
-myFlix This is a REST API for an application called “myFlix” that interacts with
-a database that stores data about different movies. The REST API will be
-accessed via commonly used HTTP methods like GET and POST.
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial scale=1" />
+    <title>MyFlix - Documentation</title>
+    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+  </head>
+
+  <body>
+    <h2>myFlix</h2>
+    <p>
+      This is a REST API for an application called “myFlix” that interacts with
+      a database that stores data about different movies. The REST API will be
+      accessed via commonly used HTTP methods like GET and POST.
+    </p>
+
+    <table>
+      <tr>
+        <th>Business Logic</th>
+        <th>URL</th>
+        <th>HTTP method</th>
+        <th>Request body data format</th>
+        <th>Response body data format</th>
+      </tr>
+      <tr>
+        <td>Return a list of ALL movies to the user</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about all the movies</td>
+      </tr>
+      <tr>
+        <td>
+          Return data (description, genre, director, image URL, whether it’s
+          featured or not) about a single movie by title to the user Return data
+          about a genre (description) by name/title (e.g., “Thriller”)
+        </td>
+        <td>/movies/[name]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>
+          A JSON object holding data about a single movie, containing an ID,
+          name, description, genre, director, imageURL (if featured).
+          Example:<br />
+          {<br />
+          id : 1, <br />
+          name : "The Shawshank Redemption", <br />
+          description : "Two imprisoned men bond over a number of years, finding
+          solace and eventual redemption through acts of common decency.",
+          <br />
+          genre : "Drama", <br />
+          director : "Frank Darabont", <br />
+          imageURL : "https://www.imdb.com/title/tt0111161/"<br />
+          }
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Return data about a director (bio, birth year, death year) by name
+        </td>
+        <td>/directors/[name]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>
+          A JSON object holding data about a single director. Example:<br />
+          {<br />
+          id : 1, <br />
+          name : "Frank Darabont", <br />
+          birth year : 1959,<br />
+          death year : <br />
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>Allow new users to register</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>
+          A JSON object holding data about the user to add, structure like:<br />
+          {<br />
+          name : "Anna Hufland",<br />
+          username: "spatzi", <br />
+          email : "annahufland@gmail.com"<br />
+          }
+        </td>
+        <td>
+          A JSON object holding data about the user that was added, including an
+          ID: <br />
+          {<br />
+          id : 5324, <br />
+          name : "Anna Hufland",<br />
+          username: "spatzi", <br />
+          email : "annahufland@gmail.com"<br />
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>Allow users to update their user info (username)</td>
+        <td>/users/[username]</td>
+        <td>PUT</td>
+        <td>None</td>
+        <td>
+          A text message indicating that the user info (username) was updated
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Allow users to add a movie to their list of favorites (showing only a
+          text that a movie has been added—more on this later)
+        </td>
+        <td>/favoriteslist</td>
+        <td>POST</td>
+        <td>
+          A JSON object holding the name of a favorite movie, structure like:<br />
+          {<br />
+          name : "The Dark Knight"<br />
+          }
+        </td>
+        <td>
+          A JSON object holding data about the movie that was added, including
+          an ID: <br />
+          {<br />
+          id : 123, <br />
+          name : "The Dark Knight"<br />
+          }
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Allow users to remove a movie from their list of favorites
+        </td>
+        <td>/favoriteslist/[ID]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>
+          A text message indicating whether the movie was successfully removed
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Allow existing users to deregister
+        </td>
+        <td>/users/[ID]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>
+          A text message indicating whether the user was successfully removed
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
