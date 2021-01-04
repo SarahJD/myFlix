@@ -83,6 +83,15 @@ app.get('/movies/:title', (req, res) => {
   );
 });
 
+// Gets the data about a single genre, by name
+app.get('/genres/:name', (req, res) => {
+  res.json(
+    genres.find(genre => {
+      return genre.name === req.params.name;
+    })
+  )
+});
+
 let users = [];
 
 // Gets the data about a single director, by name
