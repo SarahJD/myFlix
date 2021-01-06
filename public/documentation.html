@@ -36,7 +36,7 @@
           featured or not) about a single movie by title to the user Return data
           about a genre (description) by name/title (e.g., “Thriller”)
         </td>
-        <td>/movies/[title]</td>
+        <td>/movies/[Title]</td>
         <td>GET</td>
         <td>None</td>
         <td>
@@ -44,14 +44,21 @@
           title, description, genre, director, imageURL (if featured).
           Example:<br />
           {<br />
-          id : 1, <br />
-          name : "The Shawshank Redemption", <br />
-          description : "Two imprisoned men bond over a number of years, finding
-          solace and eventual redemption through acts of common decency.",
+          Id : 1, <br />
+          Name : "Beau travail", <br />
+          Description : "This film focuses on an ex-Foreign Legion officer as he recalls his once glorious life, leading troops in Djibouti. (IMDb)",
           <br />
-          genre : "Drama", <br />
-          director : "Frank Darabont", <br />
-          imageURL : "https://www.imdb.com/title/tt0111161/"<br />
+          Genre :<br /> 
+          {<br />
+            Name: "Drama", <br />
+            Description: "In film and television, drama is a category of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone. (Drama (film and television), Wikipedia)<br />
+          }<br />
+            Director :<br /> 
+            {<br />
+              Name: "Claire Denis", <br />
+              Bio: "Claire Denis was born on April 21, 1946 in Paris, France. She is a director and writer, known for High Life (2018), Der Fremdenlegionär (1999) and 35 Rum (2008). (IMDb)"<br />
+            }<br />  
+          ImageURL : "https://www.imdb.com/title/tt0209933/mediaviewer/rm1968482817"<br />
           }
         </td>
       </tr>
@@ -60,16 +67,16 @@
         <td>
           Return data about a director (bio, birth year, death year) by name
         </td>
-        <td>/directors/[name]</td>
+        <td>/directors/[Name]</td>
         <td>GET</td>
         <td>None</td>
         <td>
           A JSON object holding data about a single director. Example:<br />
           {<br />
-          id : 1, <br />
-          name : "Frank Darabont", <br />
-          birth year : 1959,<br />
-          death year : <br />
+          Id : 1, <br />
+          Name : "Frank Darabont", <br />
+          Birth year : 1959,<br />
+          Death year : <br />
           }
         </td>
       </tr>
@@ -78,15 +85,15 @@
         <td>
           Return data about a genre (description) by name (e.g. "Comedy")
         </td>
-        <td>/genres/[name]</td>
+        <td>/genres/[Name]</td>
         <td>GET</td>
         <td>None</td>
         <td>
           A JSON object holding data about a single genre. Example:<br />
           {<br />
-          id : 1, <br />
-          name : "Drama", <br />
-          description : "In film and television, drama is a category of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone. (Drama (film and television), Wikipedia)"<br />
+          Id : 1, <br />
+          Name : "Drama", <br />
+          Description : "In film and television, drama is a category of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone. (Drama (film and television), Wikipedia)"<br />
           }
         </td>
       </tr>
@@ -96,31 +103,37 @@
         <td>/users</td>
         <td>POST</td>
         <td>
-          A JSON object holding data about the user to add, structure like:<br />
           {<br />
-          name : "Anna Hufland",<br />
-          username: "spatzi", <br />
-          email : "annahufland@gmail.com"<br />
+            Username: String (required),<br />
+            Password: String (required),<br />
+            Email: String (required),<br />
+            Birthday: Date<br />
           }
         </td>
         <td>
-          A JSON object holding data about the user that was added, including an
-          ID: <br />
+          A JSON object holding data about the user to add, structure like:<br />
           {<br />
-          id : 5324, <br />
-          name : "Anna Hufland",<br />
-          username: "spatzi", <br />
-          email : "annahufland@gmail.com"<br />
+          Username : "AnnaHL",<br />
+          Password: "spatzi", <br />
+          Email : "annahufland@gmail.com",<br />
+          Birthday : "1978-04-16"<br />
           }
         </td>
       </tr>
       <tr>
-        <td>Allow users to update their user info (username)</td>
-        <td>/users/[username]</td>
+        <td>Allow users to update their user info</td>
+        <td>/users/[Username]</td>
         <td>PUT</td>
-        <td>None</td>
+        <td>A JSON object holding data about the user to add, structure like:<br />
+          {<br />
+            Username: String, (required)<br />
+            Password: String, (required)<br />
+            Email: String, (required)<br />
+            Birthday: Date<br />
+          }
+        </td>
         <td>
-          A text message indicating that the user info (username) was updated
+          A text message indicating that the user info was updated
         </td>
       </tr>
       <tr>
@@ -128,29 +141,32 @@
           Allow users to add a movie to their list of favorites (showing only a
           text that a movie has been added—more on this later)
         </td>
-        <td>/users/[username]/favorites</td>
+        <td>/users/[Username]/Movies/[Movie-ID]</td>
         <td>POST</td>
         <td>
-          A JSON object holding the name of a favorite movie, structure like:<br />
-          {<br />
-          title : "The Dark Knight"<br />
-          }
+          None
         </td>
         <td>
-          A JSON object holding data about the movie that was added, including
-          an ID: <br />
+          A JSON object holding data about the user, structure like: <br />
           {<br />
-          id : 123, <br />
-          title : "The Dark Knight"<br />
-          }
+            Username : "AnnaHL",<br />
+            Password: "spatzi", <br />
+            Email : "annahufland@gmail.com",<br />
+            Birthday : "1978-04-16"<br />
+            "_id": "5ff2fc261afbb6c444bb79a0",<br />
+            "FavoriteMovies": [<br />
+            "5ff2f73e1afbb6c444bb7994",<br />
+            "5ff2f7a51afbb6c444bb7997"<br />
+            ],<br />
+            }<br />
         </td>
       </tr>
       <tr>
         <td>
           Allow users to remove a movie from their list of favorites
         </td>
-        <td>/users/[username]/favorites/[ID]</td>
-        <td>DELETE</td>
+        <td>/users/[Username]/Movies/[Movie-ID]</td>
+        <td>PUT</td>
         <td>None</td>
         <td>
           A text message indicating whether the movie was successfully removed
@@ -160,7 +176,7 @@
         <td>
           Allow existing users to deregister
         </td>
-        <td>/users/[username]</td>
+        <td>/users/[Username]</td>
         <td>DELETE</td>
         <td>None</td>
         <td>
