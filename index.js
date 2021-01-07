@@ -17,7 +17,7 @@ const express = require('express'), // install Express
 
 const app = express();
 
-let allowedOrigins = {'http://localhost:8080', 'http://testsite.com'};
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -108,7 +108,8 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
 
 // Create a new user
 app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+  let hashedPassword = Users.hashPassword(req.body.Password);
+  Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
     .then((user) => {
       if (user) {
         return res.status(400).send(req.body.Username + ' already exists');
