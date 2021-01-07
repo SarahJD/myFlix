@@ -37,6 +37,13 @@ app.use((err, req, res) => {
 });
 */
 
+// import "auth.js" file (for login for existent users)
+let auth = require('./auth')(app);
+
+// require Passport module and import the "passport.js" file
+const passport = require('passport');
+require('./passport');
+
 // Get list of data about ALL movies
 app.get('/movies', (req, res) => {
   Movies.find()
