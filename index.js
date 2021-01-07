@@ -9,12 +9,26 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
   useNewUrlParser: true, useUnifiedTopology: true });
 
 const express = require('express'), // install Express
+  cors = require('cors'), // install CORS
   morgan = require('morgan'), // install Morgan (as a logging middleware)
   uuid = require('uuid'), // install uuid for ID generating
   bodyParser = require('body-parser'), // install bodyParser as an Express error-handling middleware
   methodOverride = require('method-override');
 
 const app = express();
+
+let allowedOrigins = {'http://localhost:8080', 'http://testsite.com'};
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn't found on the list of allowed origins
+      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 app.use(morgan('common'));
 
