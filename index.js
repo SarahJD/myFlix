@@ -15,6 +15,8 @@ const express = require('express'), // install Express
   bodyParser = require('body-parser'), // install bodyParser as an Express error-handling middleware
   methodOverride = require('method-override');
 
+const { check, validationResult, Result } = require('express-validator'); // install Express Validator for server-side validation
+
 const app = express();
 
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
@@ -106,8 +108,22 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
     });
 });
 
-// Create a new user
-app.post('/users', (req, res) => {
+// Create a new user, validate input, hash password
+app.post('/users', 
+  [ // Validation logic
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(), 
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], (req, res) => {
+    
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
   let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
     .then((user) => {
@@ -117,7 +133,7 @@ app.post('/users', (req, res) => {
         Users
           .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
