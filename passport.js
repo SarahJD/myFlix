@@ -11,10 +11,10 @@ let Users = Models.User,
 // takes a username and password from the request body and uses Mongoose to check your database for a user with the same username    
 passport.use(new LocalStrategy({
     usernameField: 'Username',
-    passwortdField: 'Password'
+    passwordField: 'Password'
 }, (username, password, callback) => {
     console.log(username + ' ' + password);
-    Users.findOne({ Username: username}, (error, err) => {
+    Users.findOne({ Username: username}, (error, user) => {
         if (error) {
             console.log(error);
             return callback(error);
@@ -29,7 +29,7 @@ passport.use(new LocalStrategy({
         if (!user.validatePassword(password)) {
             console.log('incorrect password');
             return callback(null, false, {message: 'Incorrect password.'});
-        }
+        } 
 
         console.log('finished');
         return callback(null, user);
