@@ -23,7 +23,7 @@ const { check, validationResult, Result } = require('express-validator'); // ins
 
 const app = express();
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+//let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 app.use(cors()); // ensures that all domains are allowed to make requests to the API
 
