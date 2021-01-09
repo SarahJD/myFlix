@@ -4,8 +4,12 @@ const Models = require('./models.js'); // import Models
 const Movies = Models.Movie; // import model defined in "models.js" file
 const Users = Models.User; // import model defined in "models.js" file
 
-// allow Mongoose to connect to the database and allow REST API to perform CRUD operations on MongoDB data
-mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+// allow Mongoose to connect to MongoDB and allow REST API to perform CRUD operations on MongoDB data
+/* mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+ useNewUrlParser: true, useUnifiedTopology: true }); */
+
+// allow Mongoose to connect to MongoDB Atlas (access environment variable) 
+mongoose.connect('process.env.CONNECTION_URI', {
   useNewUrlParser: true, useUnifiedTopology: true });
 
 const express = require('express'), // install Express
@@ -37,12 +41,11 @@ app.use(bodyParser.json());
 
 app.use(methodOverride());
 
-/*
-app.use((err, req, res) => {
+// for error handling
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
-*/
 
 // import "auth.js" file (for login for existent users)
 let auth = require('./auth')(app);
@@ -244,7 +247,3 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
 });
-
-/*app.listen(8080, () => {
-  console.log('Your app is listening on port 8080');
-});*/
