@@ -5,7 +5,8 @@ dotenv.config();
 
 const Movies = Models.Movie; // import model defined in "models.js" file
 const Users = Models.User; // import model defined in "models.js" file
-console.log('==========', process.env.CONNECTION_URI); 
+
+
 // allow Mongoose to connect to MongoDB Atlas (access environment variable) 
 mongoose.connect(process.env.CONNECTION_URI, {
  useNewUrlParser: true, useUnifiedTopology: true })
