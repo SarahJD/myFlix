@@ -2,7 +2,7 @@ const mongoose = require('mongoose'); // install Mongoose
 const Models = require('./models.js'); // import Models
 const dotenv = require('dotenv');
 dotenv.config();
- 
+
 const Movies = Models.Movie; // import model defined in "models.js" file
 const Users = Models.User; // import model defined in "models.js" file
 console.log('==========', process.env.CONNECTION_URI); 
