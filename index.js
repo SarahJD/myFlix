@@ -8,7 +8,9 @@ const Users = Models.User; // import model defined in "models.js" file
 console.log('==========', process.env.CONNECTION_URI); 
 // allow Mongoose to connect to MongoDB Atlas (access environment variable) 
 mongoose.connect(process.env.CONNECTION_URI, {
- useNewUrlParser: true, useUnifiedTopology: true });
+ useNewUrlParser: true, useUnifiedTopology: true })
+ .then(connect => console.log('connected to mongodb..'))
+        .catch(e => console.log('could not connect to mongodb', e));
 
 const express = require('express'), // install Express
   cors = require('cors'), // install CORS
