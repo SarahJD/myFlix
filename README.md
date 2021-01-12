@@ -4,6 +4,8 @@ This is the server-side of a web application called “myFlix WoMo”, an applic
 The REST API can be accessed via HTTP methods (GET, POST, PUT, DELETE). Similar methods are used to retrieve data from the database using Mongoose. 
 The API uses middleware modules (such as body-parser package for reading data from requests and morgan for logging) that can be inspected in the package.json file in the repository.
 
+The API is online: https://myflixwomo.herokuapp.com/
+
 Who can use it? 
 - frontend developers who want to build the client-side for a movie application 
 - the application's target group are users that enjoy reading about movies, especially movies directed by women
