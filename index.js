@@ -1,12 +1,10 @@
 const mongoose = require('mongoose'); // install Mongoose
 const Models = require('./models.js'); // import Models
+const dotenv = require('dotenv');
+dotenv.config();
 
 const Movies = Models.Movie; // import model defined in "models.js" file
 const Users = Models.User; // import model defined in "models.js" file
-
-// allow Mongoose to connect to MongoDB and allow REST API to perform CRUD operations on MongoDB data
-//mongoose.connect('mongodb://localhost:27017/myFlixDB', {
- //useNewUrlParser: true, useUnifiedTopology: true }); 
 
 // allow Mongoose to connect to MongoDB Atlas (access environment variable) 
 mongoose.connect(process.env.CONNECTION_URI, {
@@ -109,7 +107,7 @@ app.post('/users',
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(), 
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-  ], (req, res) => {
+  ], async (req, res) => {
     
     // check the validation object for errors 
     // do not execute code if error occurs, keeping database safe from any potentially malicious code
