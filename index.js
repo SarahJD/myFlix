@@ -5,12 +5,12 @@ const Movies = Models.Movie; // import model defined in "models.js" file
 const Users = Models.User; // import model defined in "models.js" file
 
 // allow Mongoose to connect to MongoDB and allow REST API to perform CRUD operations on MongoDB data
-/* mongoose.connect('mongodb://localhost:27017/myFlixDB', {
- useNewUrlParser: true, useUnifiedTopology: true }); */
+//mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+ //useNewUrlParser: true, useUnifiedTopology: true }); 
 
 // allow Mongoose to connect to MongoDB Atlas (access environment variable) 
-mongoose.connect('process.env.CONNECTION_URI', {
-  useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, {
+ useNewUrlParser: true, useUnifiedTopology: true });
 
 const express = require('express'), // install Express
   cors = require('cors'), // install CORS
